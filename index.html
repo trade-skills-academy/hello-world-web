@@ -1,0 +1,48 @@
+<!-- This is a comment, if you see a line that starts like this then it will be ignored when the page is rendered -->
+<!DOCTYPE html>
+<!-- This is how a standard HTML file starts, and it's purpose is to give the browser the first information it will need to render our web page -->
+<html lang="en">
+<!--
+    Each piece of html that you see with an opening bracket '<' and a closing bracket '>' is called a tag.
+    Tags are the most important piece of HTML. The 'head' tag is filled with meta information about the web page,
+    and it is also filled with html that is not rendered within the browser.
+-->
+<head>
+
+    <!-- This particular tag tells our web browser that this site needs to be rendered using the 'UTF-8' character set -->
+    <meta charset="UTF-8">
+    <!-- This tag is the title of our web page. Whatever you put within this tag will show up in the browser bar as the name of the web page. -->
+    <title>Hello World</title>
+
+<!-- This is our first closing tag. This is very similar to an opening tag, but instead of starting with a '<' it starts with a '</'. This tells the browser that the section, which had previously been started is now complete. -->
+</head>
+
+<!-- This tag is where the section of the site that the user sees is put. Everything within the body tag can be rendered to the user. -->
+<body>
+    <!-- This is our first piece of content that the user can see. It is a header with the level set to 1. -->
+    <h1>Hello World</h1>
+
+    <!-- You can render 6 different types of headers with the first being the most prominent with each becoming smaller. -->
+    <h2>Examples</h2>
+
+    <!-- This is a paragraph of text, and it will be one of the most common HTML tags that you will use. -->
+    <p>Choose any link below to view further examples.</p>
+
+    <!-- This tag is a content divider, which will visibly separate sections of our page. -->
+    <div>
+        <!-- This tag allows us to how an unordered list of items. You can also use 'ol' to get an ordered list, which will then show numbers instead of bullets -->
+        <ul>
+            <!-- Within a ul or ol you can only have 'li' tags, which represent a list item. -->
+            <li>
+                <!-- Our last example on this page is for an anchor tag. This tag allows us to take our user to a different resource. -->
+                <a href="tags.html">HTML tag examples</a>
+            </li>
+            <li>
+                <a href="js-form.html">JS Form example</a>
+            </li>
+        </ul>
+    </div>
+
+<!-- This is how every single page is finished on a web page. It needs to close both our body tag and html tag. -->
+</body>
+</html>

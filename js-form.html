@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World - JS Form</title>
+
+    <!-- This is how you embed css into your page. -->
+    <style>
+        /**
+         * This a CSS comment. The format is quite a bit different than an HTML comment.
+         * While we are within a style tag we are writing CSS code instead of HTML.
+         * The below line is something called a selector.
+         * You can have a selector that starts with an id indicated by a hash tag, a class indicated by a dot, and a tag name by simply writing the tag name.
+         * The selector below will apply a style to all 'form' tags
+         **/
+        form {
+            /** This will center all elements within the form **/
+            text-align: center;
+        }
+
+        label {
+            /**
+             * There are numerous ways that an element can be displayed.
+             * Setting it to block will make the element take up a full line.
+             **/
+            display: block;
+            /** This allows us to change the mouse cursor the user sees when they are hovering over a label **/
+            cursor: pointer;
+        }
+
+        /**
+         * This selector will select the element with an id attribute set to errors.
+         * Only one element per page can have a unique id.
+         */
+        #errors {
+            /** This will set the color of our text to the color red **/
+            color: red;
+        }
+
+        /**
+         * This selector will target all elements with the class method as an attribute
+         */
+        .method {
+            /** This will increase the size of our font 25% beyond what it normally displays **/
+            font-size: 1.25rem;
+        }
+
+        /**
+         * We can also target an element based on attributes that it may have such as an input's type
+         */
+        input[type=text] {
+            display: block;
+            /**
+             * Sometimes text align center is not enough.
+             * When you set an element to display block, which is not normally centered it will then have a margin set to 0, which will put it on the left side of the page.
+             * Giving a margin of '0 auto', will make the top and bottom have a margin of 0 pixels, and then the left and right side will have an automatically calculated margin based on the remaining space in the continer.
+             * This will result in the element being centered in the container.
+             **/
+            margin: 0 auto;
+        }
+
+        #submit {
+            font-size: 20px;
+            cursor: pointer;
+            /**
+             * This property will give our submit button a 10 pixel margin on the top, an automatically calculated margin on the sides, and 0 pixels of margin on the bottom.
+             * When working with a lot of properties they will have multiple ways to set the spacings.
+             */
+            margin: 10px auto 0;
+        }
+        /**
+         * You can also use something called pseudo elements to target an element when it is in certain states.
+         * The hover pseudo selector will activate when the user has their mouse over the element.
+         */
+        #submit:hover {
+            background: yellow;
+        }
+    </style>
+</head>
+<body>
+    <h1>JS Interactive Form</h1>
+    <p>This page will demonstrate how we can interact with a form through JavaScript, and it will give you some basic examples of JavaScript functions.</p>
+
+    <!-- This is how you open up a form, so that we can receive user input. -->
+    <form id="main-form">
+
+        <!-- This will be a placeholder section where we can put any submission errors -->
+        <div id="errors"></div>
+
+        <div id="message"></div>
+
+        <!-- Every input within a form should have a label, so there is a place that the user can click, which will focus in on our input. -->
+        <label>
+            Enter Message:
+            <!-- This is how we put an input into our form. There are a number of types of inputs that you can use, which will have various uses. -->
+            <input type="text" name="message" id="message-input"/>
+        </label>
+
+        <h3>Select how you want the message to appear.</h3>
+        <label class="method">
+            <input class="method-input" type="radio" name="method" value="html">
+            Insert into HTML
+        </label>
+        <label class="method">
+            <input class="method-input" type="radio" name="method" value="alert">
+            Display an alert
+        </label>
+        <label class="method">
+            <input class="method-input" type="radio" name="method" value="console">
+            Log to console <i>make sure you open your developer tools to see the result</i>
+        </label>
+
+        <!-- This will submit the form when it is clicked. -->
+        <button id="submit">Submit</button>
+
+    </form>
+
+    <!-- We Can also embed JS into our page by inserting a script tag within our HTML. -->
+    <script type="application/javascript">
+
+        /**
+         * This is how we declare a variable in JS.
+         * Note that the name of the variable is form, and it is being set to be equal to the value that is returned from the function document.getElementById('main-form')
+         * The object 'document' represents our entire loaded document, and it allows us to interact with the components within the page.
+         * Within the document object we call the function getElementById, which looks through the document to try and find an element that has the id we have passed in.
+         * The id we have passed in is 'main-form', which corresponds to the form we created above.
+         * When this function is called it will find that element, and return a reference to that form that we can interact with.
+         */
+        let form = document.getElementById('main-form');
+
+        /**
+         * This is our handleSubmission function that we will create in order to verify the submission properly.
+         * @param event The parameter to this function is an event object, which is automatically generated from the built in function of the browser.
+         */
+        function handleSubmission(event) {
+            // The first thing we want to do is prevent the form from submitting further, since that will reload the page, and prevent us from interacting with the form.
+            event.preventDefault();
+
+            /**
+             * We then reference all of our HTML elements so that we are going to need to interact with.
+             */
+            let errorsDisplay = document.getElementById('errors');
+            let messageDisplay = document.getElementById('message');
+            let messageInput = document.getElementById('message-input');
+            /**
+             * We can use a function called getElementsByClassName to get all elements that have a class name.
+             * This is a bit different than getElementById, since an html page can only have one element with a single id.
+             * This means that the function getElementById will return only a single element whereas getElementsByClassName will return a list of elements.
+             * Each element returned by this function will have the class name that we passed into the function.
+             */
+            let methodInputs = document.getElementsByClassName('method-input');
+
+            /**
+             * We then want to reset the text of these elements in case they have anything in them from before.
+             */
+            errorsDisplay.innerHTML = '';
+            messageDisplay.innerHTML = '';
+
+            /**
+             * Next we are going to validate that there is no error within the form by checking our inputs for a value.
+             */
+            let error = null;
+            let method = null;
+
+            /**
+             * The messageInput variable has a property named value. The property value is a string.
+             * Each string has another property named length, which will tell us how many characters there are in the string.
+             * If there are no characters in the string we then have an error, since the user has not entered a message.
+             */
+            if (messageInput.value.length === 0) {
+                error = "Please Enter a Message";
+            } else {
+
+                /**
+                 * This is a pretty standard for loop
+                 * We start by creating a variable named i, which stands for iterator.
+                 * We set that to 0, then we tell the for loop to run while i is less then the amount of method inputs.
+                 * Then we tell the for loop to add one to i every time it finishes running the code in for loop.
+                 * This for loop will run for every single method input in the list.
+                 */
+                for (let i = 0; i < methodInputs.length; i++) {
+                    /**
+                     * The methodInput variable will be a different input every time this for loop iterates.
+                     */
+                    let methodInput = methodInputs[i];
+
+                    /**
+                     * Since this input is a radio button input, it will have a checked property set to true whenever it is checked.
+                     * We will then set our previously created variable 'method' to the value of the method input
+                     */
+                    if (methodInput.checked === true) {
+                        method = methodInput.value;
+                    }
+                }
+
+                /**
+                 * After the for loop has run there should be a value set to our method as long as there was a checked method input.
+                 * If there is no value to the method variable at this point then it means that the user has not selected an appearance method.
+                 */
+                if (method == null) {
+                    error = "Please selected a delivery method";
+                }
+            }
+
+            /**
+             * At this point we will only have a set value for the error if we found one previously.
+             */
+            if (error !== null) {
+                /**
+                 * This will display the error within the error display we have created.
+                 */
+                errorsDisplay.innerText = error;
+
+                /**
+                 * This will then exit this function
+                 */
+                return;
+            }
+
+            /**
+             * We then use a switch to check the value of our method, and call various functions that will display our message.
+             */
+            switch (method) {
+                case 'html':
+                    messageDisplay.innerText = messageInput.value;
+                    break;
+
+                case 'alert':
+                    alert(messageInput.value);
+                    break;
+
+                case 'console':
+                    console.log(messageInput.value);
+                    break;
+            }
+
+            /**
+             * Finally, we reset the value of our message, so that the user can enter a new message
+             */
+            messageInput.value = '';
+        }
+
+        /**
+         * After we have a form as a variable, and our function declared we then use the function addEventListener to intercept the submit event.
+         * When we use this function we have to pass in two parameters.
+         * The first parameter is the name of the event that we want to intercept, which can be a large amount of possibilities.
+         * The second parameter is a function, which will be called when the event is fired on the object that we are adding the listener to.
+         */
+        form.addEventListener('submit', handleSubmission);
+    </script>
+</body>
+</html>
